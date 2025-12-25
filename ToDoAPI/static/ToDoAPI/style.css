@@ -1,0 +1,86 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Page background */
+body {
+    min-height: 100vh;
+    background-color: rgb(249, 250, 251);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Main container */
+.container {
+    background-color: rgb(255, 255, 255);
+    padding: 32px;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.container h1 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: rgb(17, 24, 39);
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: rgb(55, 65, 81);
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    border: 1px solid rgb(229, 231, 235);
+    border-radius: 8px;
+    font-size: 14px;
+    color: rgb(17, 24, 39);
+}
+
+input:focus {
+    outline: none;
+    border-color: rgb(37, 99, 235);
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: rgb(37, 99, 235);
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: rgb(29, 78, 216);
+}
+
+.login-link {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    font-size: 14px;
+    color: rgb(37, 99, 235);
+    text-decoration: none;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}

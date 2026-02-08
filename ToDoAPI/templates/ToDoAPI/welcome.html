@@ -6,7 +6,9 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Xos geldin {{ name}}</h1>
-    <a href="/">Geri</a>
+    <h1>Welcome</h1>
+    <a href="{% url 'logout' %}">
+        <button>Log Out</button>
+    </a>
 </body>
 </html>

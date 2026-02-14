@@ -4,11 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../../static/ToDoAPI/style2.css"> 
 </head>
 <body>
-    <h1>Welcome</h1>
-    <a href="{% url 'logout' %}">
-        <button>Log Out</button>
-    </a>
+    <nav>
+        <h1>Welcome</h1>
+        <a href="{% url 'logout' %}">
+            <button>Log Out</button>
+        </a>
+    </nav>
+    
+    <form method="post">
+        {% csrf_token %}
+
+        <input type="text" name="title" required placeholder="Task title">
+        <button type="submit">Add task</button>
+    </form>
+
+    <ul>
+    {% for todo in todos %}
+        <li>{{ todo.title }}</li>
+    {% endfor %}
+    </ul>
+
+
 </body>
 </html>

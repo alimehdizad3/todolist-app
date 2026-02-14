@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from models import Todo
 # Create your views here.
 
 def register(request):
@@ -32,7 +33,12 @@ def login_view(request):
 
 @login_required
 def welcome(request):
-    return render(request, 'ToDoAPI/welcome.html')
+    if request.method == "POST":
+        title = request.POST.get("title")
+        Todo.objects.create(user=request.user, title=title)
+    
+    todos = Todo.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'ToDoAPI/welcome.html', {"todos" : todos})
 
 
 def logout_view(request):

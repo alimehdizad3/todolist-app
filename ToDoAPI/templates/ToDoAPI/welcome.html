@@ -14,6 +14,7 @@
         </a>
     </nav>
     
+    <!-- Add new task -->
     <form method="post">
         {% csrf_token %}
 
@@ -21,9 +22,25 @@
         <button type="submit">Add task</button>
     </form>
 
+
+    <!-- Todo list -->
     <ul>
-    {% for todo in todos %}
-        <li>{{ todo.title }}</li>
+        {% for todo in todos %}
+        <li id="todo-{{ todo.id }}">
+            <form method="post" action="{% url 'toggle' todo.id %}">
+                {% csrf_token %}
+                <input type="checkbox" name="completed" onchange="this.form.submit();" 
+                {% if todo.completed %}
+                checked
+                {% endif %}>
+                <span 
+                {% if todo.completed %}
+                style="text-decoration: line-through;"
+                {% endif %}>
+                    {{ todo.title }}
+                </span>
+            </form>
+        </li>
     {% endfor %}
     </ul>
 

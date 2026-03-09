@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from models import Todo
+from .models import Todo
 # Create your views here.
 
 def register(request):
@@ -44,3 +44,11 @@ def welcome(request):
 def logout_view(request):
     logout(request)
     return redirect('/login')
+
+@login_required
+def toggle_todo(request, todo_id):
+    if request.method=="POST":
+        todo = get_object_or_404(Todo, id=todo_id, user=request.user)
+        todo.completed = not todo.completed
+        todo.save()
+    return redirect('/welcome')

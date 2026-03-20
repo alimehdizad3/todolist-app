@@ -40,8 +40,13 @@
                     {{ todo.title }}
                 </span>
             </form>
+                <!-- Delete task-->
+            <form method="post" action="{% url 'delete' todo.id %}">
+                {% csrf_token %}
+                <button type="submit" name="delete">Delete</button>
+            </form>
         </li>
-    {% endfor %}
+        {% endfor %}
     </ul>
 
 

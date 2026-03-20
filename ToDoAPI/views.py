@@ -52,3 +52,10 @@ def toggle_todo(request, todo_id):
         todo.completed = not todo.completed
         todo.save()
     return redirect('/welcome')
+
+@login_required
+def delete_task(request, todo_id):
+    if request.method == "POST":
+        todo = get_object_or_404(Todo, id=todo_id, user=request.user)
+        todo.delete()
+    return redirect('/welcome')

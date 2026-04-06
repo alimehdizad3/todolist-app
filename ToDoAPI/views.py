@@ -7,10 +7,11 @@ from .models import Todo
 
 def register(request):
     if request.method == 'POST':
+        username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
 
-        user = User.objects.create_user(username=email, email=email, password=password)
+        user = User.objects.create_user(username=username, email=email, password=password)
         
         return redirect('/login')
     

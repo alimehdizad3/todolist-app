@@ -14,6 +14,9 @@
         <form action="/register" method="post">
             {% csrf_token %}
 
+            <label>Username</label>
+            <input type="text" name="username" required placeholder="abc123">
+
             <label>Email</label>
             <input type="email" name="email" required placeholder="abc123@gmail.com">
 

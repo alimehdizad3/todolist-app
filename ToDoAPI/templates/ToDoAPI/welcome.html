@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ToDo List</title>
     <link rel="stylesheet" href="../../static/ToDoAPI/style2.css"> 
 </head>
 <body>
@@ -23,9 +23,22 @@
     </form>
 
 
-    <!-- Todo list -->
+    <!-- Edit task -->
     <ul>
         {% for todo in todos %}
+        {% if todo.id == editing_id %}
+            <li id="todo-{{ todo.id }}">
+                <form method="post" action="{% url 'edit' todo.id %}">
+                    {% csrf_token %}
+                    <input value="{{ todo.title }}" name="new_todo" required>
+                    <button type="submit">Save</button>
+                </form>
+                <a href="{% url 'welcome' %}">
+                    <button>Cancel</button>
+                </a>
+            </li>
+        <!-- Todo list -->
+        {% else%}
         <li id="todo-{{ todo.id }}">
             <form method="post" action="{% url 'toggle' todo.id %}">
                 {% csrf_token %}
@@ -40,12 +53,17 @@
                     {{ todo.title }}
                 </span>
             </form>
+                <!-- Edit task-->
+            <a href="{% url 'edit' todo.id %}">
+                <button>Edit</button>
+            </a>
                 <!-- Delete task-->
             <form method="post" action="{% url 'delete' todo.id %}">
                 {% csrf_token %}
                 <button type="submit" name="delete">Delete</button>
             </form>
         </li>
+        {% endif %}
         {% endfor %}
     </ul>
 

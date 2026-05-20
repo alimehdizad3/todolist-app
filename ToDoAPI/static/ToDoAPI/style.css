@@ -84,3 +84,12 @@ button:hover {
 .login-link:hover {
     text-decoration: underline;
 }
+
+.error {
+    color: red;
+    background-color: #ffe5e5;
+    padding: 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}

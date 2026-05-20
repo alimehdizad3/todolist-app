@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="../../static/ToDoAPI/style1.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'ToDoAPI/style1.css' %}">
 </head>
 <body>
     <div class="container">
@@ -12,9 +13,13 @@
 
         <form action="/login" method="post">
             {% csrf_token %}
-
-            <label>Email</label>
-            <input type="email" name="email" required placeholder="abc123@gmail.com">
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="error">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+            <label>Username</label>
+            <input type="text" name="username" required placeholder="abc123">
 
             <label>Password</label>
             <input type="password" name="password" required placeholder="Your password">

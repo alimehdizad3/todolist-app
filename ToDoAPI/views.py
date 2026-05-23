@@ -46,11 +46,16 @@ def login_view(request):
 def welcome(request):
     if request.method == "POST":
         title = request.POST.get("title")
-        Todo.objects.create(user=request.user, title=title)
+        title = title.strip()
+        if title:
+            Todo.objects.create(user=request.user, title=title)
         return redirect('/welcome')
     
     todos = Todo.objects.filter(user=request.user).order_by('-created_at')
-    return render(request, 'ToDoAPI/welcome.html', {"todos" : todos})
+    total = todos.count()
+    c_count = todos.filter(completed=True).count()
+    u_count = todos.filter(completed=False).count()
+    return render(request, 'ToDoAPI/welcome.html', {"todos" : todos, "total" : total, "completed" : c_count, "uncompleted" : u_count})
 
 
 def logout_view(request):
@@ -76,7 +81,7 @@ def delete_task(request, todo_id):
 def edit_task(request, todo_id):
     if request.method == "POST":
         todo = get_object_or_404(Todo, id=todo_id, user=request.user)
-        new_todo = request.POST.get('new_todo')
+        new_todo = request.POST.get('new_todo').strip()
         if new_todo:
             todo.title = new_todo
             todo.save()

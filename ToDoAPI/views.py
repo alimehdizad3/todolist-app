@@ -52,10 +52,17 @@ def welcome(request):
         return redirect('/welcome')
     
     todos = Todo.objects.filter(user=request.user).order_by('-created_at')
+    search = request.GET.get("search")
+    if search:
+        search = search.strip()
+        todos = todos.filter(title__icontains=search)
+    else:
+        search=""
+        
     total = todos.count()
     c_count = todos.filter(completed=True).count()
     u_count = todos.filter(completed=False).count()
-    return render(request, 'ToDoAPI/welcome.html', {"todos" : todos, "total" : total, "completed" : c_count, "uncompleted" : u_count})
+    return render(request, 'ToDoAPI/welcome.html', {"todos" : todos, "total" : total, "completed" : c_count, "uncompleted" : u_count, "search" : search})
 
 
 def logout_view(request):
@@ -68,14 +75,16 @@ def toggle_todo(request, todo_id):
         todo = get_object_or_404(Todo, id=todo_id, user=request.user)
         todo.completed = not todo.completed
         todo.save()
-    return redirect('/welcome')
+    next_url = request.POST.get("next", "/welcome")
+    return redirect(next_url)
 
 @login_required
 def delete_task(request, todo_id):
     if request.method == "POST":
         todo = get_object_or_404(Todo, id=todo_id, user=request.user)
         todo.delete()
-    return redirect('/welcome')
+    next_url = request.POST.get("next", "/welcome")
+    return redirect(next_url)
 
 @login_required
 def edit_task(request, todo_id):
@@ -85,6 +94,10 @@ def edit_task(request, todo_id):
         if new_todo:
             todo.title = new_todo
             todo.save()
-        return redirect('/welcome')
+        next_url = request.POST.get("next", "/welcome")
+        return redirect(next_url)
     todos = Todo.objects.filter(user=request.user).order_by('-created_at')
-    return render(request, 'ToDoAPI/welcome.html', {"todos" : todos, "editing_id" : todo_id})
+    search = request.GET.get("search", "")
+    if search:
+        todos = todos.filter(title__icontains=search)
+    return render(request, 'ToDoAPI/welcome.html', {"todos" : todos, "editing_id" : todo_id, "search" : search})

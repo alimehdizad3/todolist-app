@@ -58,7 +58,14 @@ def welcome(request):
         todos = todos.filter(title__icontains=search)
     else:
         search=""
-        
+    
+    filter_type = request.GET.get("filter", "")
+    if filter_type:
+        if filter_type == "pending":
+            todos = todos.filter(completed=False)
+        elif filter_type == "completed":
+            todos = todos.filter(completed=True)
+
     total = todos.count()
     c_count = todos.filter(completed=True).count()
     u_count = todos.filter(completed=False).count()

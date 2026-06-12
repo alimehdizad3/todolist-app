@@ -34,6 +34,15 @@
     <p>Completed: {{ completed }}</p>
     <p>Pending: {{ uncompleted }}</p>
 
+    <div class="filter-btn">
+        <form method="GET">
+            <a href="{% url 'welcome' %}?filter=all">All</a>
+            <a href="{% url 'welcome' %}?filter=completed">Completed</a>
+            <a href="{% url 'welcome' %}?filter=pending">Pending</a>
+            
+        </form>
+    </div>
+
     <!-- Edit task -->
     <ul>
         {% for todo in todos %}

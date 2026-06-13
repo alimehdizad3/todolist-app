@@ -13,6 +13,7 @@
         <div>
             <form method="GET">
                 <label>Search task:</label>
+                <input type="hidden" name="filter" value="{{ filter_type }}">
                 <input type="text" name="search" placeholder="Type for search task" value="{{ search }}">
                 <button type="submit">Search</button>
             </form>
@@ -36,10 +37,9 @@
 
     <div class="filter-btn">
         <form method="GET">
-            <a href="{% url 'welcome' %}?filter=all">All</a>
-            <a href="{% url 'welcome' %}?filter=completed">Completed</a>
-            <a href="{% url 'welcome' %}?filter=pending">Pending</a>
-            
+            <a href="{% url 'welcome' %}?filter=all&search={{ search }}">All</a>
+            <a href="{% url 'welcome' %}?filter=completed&search={{ search }}">Completed</a>
+            <a href="{% url 'welcome' %}?filter=pending&search={{ search }}">Pending</a>
         </form>
     </div>
 
@@ -50,11 +50,11 @@
             <li id="todo-{{ todo.id }}">
                 <form method="post" action="{% url 'edit' todo.id %}">
                     {% csrf_token %}
-                    <input type="hidden" name="next" value="/welcome?search={{ search }}">
+                    <input type="hidden" name="next" value="/welcome?search={{ search }}&filter={{ filter_type }}">
                     <input value="{{ todo.title }}" name="new_todo" required>
                     <button type="submit">Save</button>
                 </form>
-                <a href="{% url 'welcome' %}?search={{ search }}">
+                <a href="{% url 'welcome' %}?search={{ search }}&filter={{ filter_type }}">
                     <button>Cancel</button>
                 </a>
             </li>
@@ -76,7 +76,7 @@
                 </span>
             </form>
                 <!-- Edit task-->
-            <a href="{% url 'edit' todo.id %}?search={{ search }}">
+            <a href="{% url 'edit' todo.id %}?search={{ search }}&filter={{ filter_type }}">
                 <button>Edit</button>
             </a>
                 <!-- Delete task-->

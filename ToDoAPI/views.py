@@ -69,7 +69,7 @@ def welcome(request):
     total = todos.count()
     c_count = todos.filter(completed=True).count()
     u_count = todos.filter(completed=False).count()
-    return render(request, 'ToDoAPI/welcome.html', {"todos" : todos, "total" : total, "completed" : c_count, "uncompleted" : u_count, "search" : search})
+    return render(request, 'ToDoAPI/welcome.html', {"todos" : todos, "total" : total, "completed" : c_count, "uncompleted" : u_count, "search" : search, "filter_type" : filter_type})
 
 
 def logout_view(request):
@@ -107,4 +107,10 @@ def edit_task(request, todo_id):
     search = request.GET.get("search", "")
     if search:
         todos = todos.filter(title__icontains=search)
-    return render(request, 'ToDoAPI/welcome.html', {"todos" : todos, "editing_id" : todo_id, "search" : search})
+    filter_type = request.GET.get("filter", "")
+    if filter_type:
+        if filter_type == "pending":
+            todos = todos.filter(completed=False)
+        elif filter_type == "completed":
+            todos = todos.filter(completed=True)
+    return render(request, 'ToDoAPI/welcome.html', {"todos" : todos, "editing_id" : todo_id, "search" : search, "filter_type" : filter_type})

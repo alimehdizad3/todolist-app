@@ -28,6 +28,7 @@
         {% csrf_token %}
 
         <input type="text" name="title" required placeholder="Task title">
+        <input type="date" name="deadline">
         <button type="submit">Add task</button>
     </form>
 
@@ -52,6 +53,7 @@
                     {% csrf_token %}
                     <input type="hidden" name="next" value="/welcome?search={{ search }}&filter={{ filter_type }}">
                     <input value="{{ todo.title }}" name="new_todo" required>
+                    <input type="date" name="new_deadline" value="{{ todo.deadline }}">
                     <button type="submit">Save</button>
                 </form>
                 <a href="{% url 'welcome' %}?search={{ search }}&filter={{ filter_type }}">
@@ -85,6 +87,9 @@
                 <input type="hidden" name="next" value="{{ request.get_full_path }}">
                 <button type="submit" name="delete">Delete</button>
             </form>
+            {% if todo.deadline %}
+                <a>Deadline:</a>{{ todo.deadline }}
+            {% endif %}
         </li>
         {% endif %}
         {% endfor %}

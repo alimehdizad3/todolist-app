@@ -47,8 +47,11 @@ def welcome(request):
     if request.method == "POST":
         title = request.POST.get("title")
         title = title.strip()
+        deadline = request.POST.get("deadline")
+        if not deadline:
+            deadline = None
         if title:
-            Todo.objects.create(user=request.user, title=title)
+            Todo.objects.create(user=request.user, title=title, deadline=deadline)
         return redirect('/welcome')
     
     todos = Todo.objects.filter(user=request.user).order_by('-created_at')
@@ -98,8 +101,12 @@ def edit_task(request, todo_id):
     if request.method == "POST":
         todo = get_object_or_404(Todo, id=todo_id, user=request.user)
         new_todo = request.POST.get('new_todo').strip()
+        new_deadline = request.POST.get('new_deadline')
         if new_todo:
             todo.title = new_todo
+            todo.save()
+        if new_deadline:
+            todo.deadline = new_deadline
             todo.save()
         next_url = request.POST.get("next", "/welcome")
         return redirect(next_url)

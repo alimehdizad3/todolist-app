@@ -104,10 +104,11 @@ def edit_task(request, todo_id):
         new_deadline = request.POST.get('new_deadline')
         if new_todo:
             todo.title = new_todo
-            todo.save()
         if new_deadline:
             todo.deadline = new_deadline
-            todo.save()
+        if 'remove_deadline' in request.POST:
+            todo.deadline = None
+        todo.save()
         next_url = request.POST.get("next", "/welcome")
         return redirect(next_url)
     todos = Todo.objects.filter(user=request.user).order_by('-created_at')

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Page</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'ToDoAPI/style3.css' %}">
+</head>
+<body>
+    <a href="{% url 'welcome' %}">
+        <button>Back</button>
+    </a>
+    <p>Username: {{ request.user.username }}</p>
+    <p>Email: {{ request.user.email }}</p>
+    <a href="{% url 'change' %}?edit=username">
+        <button type="submit" name="change">Change Email and Username</button>
+    </a>
+    <a href="{% url 'change' %}?edit=password">
+        <button>Change Password</button>
+    </a>
+
+    {% if mode == 'username' %}
+        <form method="post" action="{% url 'change' %}">
+            {% csrf_token %}
+            <label>New Username:</label>
+            <input type="text" value="{{ request.user.username }}" name="new_username" required>
+            <label>New Email:</label>
+            <input type="email" value="{{ request.user.email }}" name="new_email" required>
+            <button type="submit" name="update_user_info">Save</button>
+        </form>
+    
+        <a href="{% url 'profile' %}">
+            <button>Cancel</button>
+        </a>
+    {% endif %}
+    
+    {% if mode == 'password' %}
+        <form method="post" action="{% url 'change' %}">
+            {% csrf_token %}
+            <label>Old Password:</label>
+            <input type="password" name="old_password" required>
+            <label>New Password:</label>
+            <input type="password" name="new_password" required>
+            <label>Repeat New Password:</label>
+            <input type="password" name="re_new_password" required>
+            <button type="submit" name="update_password">Save</button>
+        </form>
+        <a href="{% url 'profile' %}">
+            <button>Cancel</button>
+        </a>
+    {% endif %}
+
+        {% if messages %}    
+            {% for message in messages %}
+                <p class="error">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+</body>
+</html>

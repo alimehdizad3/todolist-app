@@ -5,7 +5,7 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Page background */
+
 body {
     min-height: 100vh;
     background-color: rgb(249, 250, 251);
@@ -14,7 +14,7 @@ body {
     align-items: center;
 }
 
-/* Main container */
+
 .container {
     background-color: rgb(255, 255, 255);
     padding: 32px;
@@ -24,14 +24,14 @@ body {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
-/* Title */
+
 .container h1 {
     text-align: center;
     margin-bottom: 24px;
     color: rgb(17, 24, 39);
 }
 
-/* Labels */
+
 label {
     display: block;
     margin-bottom: 6px;
@@ -39,7 +39,7 @@ label {
     color: rgb(55, 65, 81);
 }
 
-/* Inputs */
+
 input {
     width: 100%;
     padding: 10px 12px;
@@ -55,7 +55,7 @@ input:focus {
     border-color: rgb(37, 99, 235);
 }
 
-/* Button */
+
 button {
     width: 100%;
     padding: 12px;

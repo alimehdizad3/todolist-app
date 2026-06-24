@@ -122,3 +122,41 @@ def edit_task(request, todo_id):
         elif filter_type == "completed":
             todos = todos.filter(completed=True)
     return render(request, 'ToDoAPI/welcome.html', {"todos" : todos, "editing_id" : todo_id, "search" : search, "filter_type" : filter_type})
+
+@login_required
+def profile(request):
+    return render(request, 'ToDoAPI/profile.html')
+
+@login_required
+def change(request):
+    user = get_object_or_404(User, username=request.user.username)
+    edit = request.GET.get('edit')
+    if 'update_user_info' in request.POST:
+        new_username = request.POST.get('new_username').strip()
+        new_email = request.POST.get('new_email').strip()
+        if new_username and new_email:  
+            if User.objects.filter(username=new_username).exists() and new_username!=request.user.username:
+                messages.error(request, "This username already used")
+            elif User.objects.filter(email=new_email).exists() and new_email!=request.user.email:
+                messages.error(request, "This email already registered")
+            else:
+                user.username = new_username
+                user.email = new_email
+                user.save()
+                return redirect('/profile')
+            
+    elif 'update_password' in request.POST:
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password').strip()
+        re_new_password = request.POST.get('re_new_password').strip()
+        if not user.check_password(old_password):
+            messages.error(request, "Password is wrong")
+        else:
+            if new_password and re_new_password:
+                if new_password != re_new_password:
+                    messages.error(request, "Doesn't match new password")
+                else:
+                    user.set_password(new_password)
+                    user.save()
+                    return redirect('/profile')
+    return render(request, 'ToDoAPI/profile.html', {"mode" : edit})

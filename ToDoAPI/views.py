@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from .models import Todo
 from django.contrib import messages
@@ -143,6 +143,7 @@ def change(request):
                 user.username = new_username
                 user.email = new_email
                 user.save()
+                messages.success(request, "Changes saved successfully")
                 return redirect('/profile')
             
     elif 'update_password' in request.POST:
@@ -158,5 +159,8 @@ def change(request):
                 else:
                     user.set_password(new_password)
                     user.save()
+                    
+                    update_session_auth_hash(request, user)
+                    messages.success(request, "Changes saved successfully")
                     return redirect('/profile')
     return render(request, 'ToDoAPI/profile.html', {"mode" : edit})

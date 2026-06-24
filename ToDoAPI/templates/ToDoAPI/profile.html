@@ -11,8 +11,12 @@
     <a href="{% url 'welcome' %}">
         <button>Back</button>
     </a>
-    <p>Username: {{ request.user.username }}</p>
-    <p>Email: {{ request.user.email }}</p>
+
+    <div class="profile-info">
+        <p>Username: {{ request.user.username }}</p>
+        <p>Email: {{ request.user.email }}</p>
+    </div>
+    
     <a href="{% url 'change' %}?edit=username">
         <button type="submit" name="change">Change Email and Username</button>
     </a>
@@ -53,7 +57,7 @@
 
         {% if messages %}    
             {% for message in messages %}
-                <p class="error">{{ message }}</p>
+                <p class="{{ message.tags }}">{{ message }}</p>
             {% endfor %}
         {% endif %}
 </body>

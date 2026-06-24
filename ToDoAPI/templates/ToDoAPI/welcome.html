@@ -18,12 +18,9 @@
                 <button type="submit">Search</button>
             </form>
         </div>
-        <a href="{% url 'logout' %}">
-            <button>Log Out</button>
-        </a>
-        <a href="{% url 'profile' %}">
-            <button>Profile</button>
-        </a>
+
+        <a href="{% url 'logout' %}" class="nav-btn">Log Out</a>
+        <a href="{% url 'profile' %}" class="nav-btn">Profile</a>
     </nav>
 
     <!-- Add new task -->
@@ -52,7 +49,7 @@
         {% for todo in todos %}
         {% if todo.id == editing_id %}
             <li id="todo-{{ todo.id }}">
-                <form method="post" action="{% url 'edit' todo.id %}">
+                <form method="post" action="{% url 'edit' todo.id %}" class="edit-form">
                     {% csrf_token %}
                     <input type="hidden" name="next" value="/welcome?search={{ search }}&filter={{ filter_type }}">
                     <input value="{{ todo.title }}" name="new_todo" required>
@@ -60,42 +57,53 @@
                     {% if todo.deadline %}
                         <button type="submit" name="remove_deadline">Remove Deadline</button>
                     {% endif %}
-                    <button type="submit">Save</button>
+                    <div class="edit-buttons">
+                        <button type="submit">Save</button>
+                        
+                        <a href="{% url 'welcome' %}?search={{ search }}&filter={{ filter_type }}">
+                            <button>Cancel</button>
+                        </a>
+                    </div>
                 </form>
-                <a href="{% url 'welcome' %}?search={{ search }}&filter={{ filter_type }}">
-                    <button>Cancel</button>
-                </a>
             </li>
         <!-- Todo list -->
         {% else%}
         <li id="todo-{{ todo.id }}">
-            <form method="post" action="{% url 'toggle' todo.id %}">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                <input type="checkbox" name="completed" onchange="this.form.submit();" 
-                {% if todo.completed %}
-                checked
-                {% endif %}>
-                <span 
-                {% if todo.completed %}
-                style="text-decoration: line-through;"
-                {% endif %}>
-                    {{ todo.title }}
-                </span>
-            </form>
+            <div>
+                <form method="post" action="{% url 'toggle' todo.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <input type="checkbox" name="completed" onchange="this.form.submit();" 
+                    {% if todo.completed %}
+                    checked
+                    {% endif %}>
+                    <span 
+                    {% if todo.completed %}
+                    style="text-decoration: line-through;"
+                    {% endif %}>
+                        {{ todo.title }}
+                    </span>
+                    {% if todo.deadline %}
+                        <div>
+                            <span class="todo-deadline">
+                                Deadline: {{ todo.deadline|date:"Y-m-d" }}
+                            </span>
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
                 <!-- Edit task-->
-            <a href="{% url 'edit' todo.id %}?search={{ search }}&filter={{ filter_type }}">
-                <button>Edit</button>
-            </a>
-                <!-- Delete task-->
-            <form method="post" action="{% url 'delete' todo.id %}">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                <button type="submit" name="delete">Delete</button>
-            </form>
-            {% if todo.deadline %}
-                <span>Deadline:</span>{{ todo.deadline|date:"Y-m-d" }}
-            {% endif %}
+            <div>
+                <a href="{% url 'edit' todo.id %}?search={{ search }}&filter={{ filter_type }}">
+                    <button>Edit</button>
+                </a>
+                    <!-- Delete task-->
+                <form method="post" action="{% url 'delete' todo.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit" name="delete">Delete</button>
+                </form>
+            </div>
         </li>
         {% endif %}
         {% endfor %}

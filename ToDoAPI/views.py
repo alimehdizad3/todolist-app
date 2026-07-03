@@ -6,6 +6,11 @@ from .models import Todo
 from django.contrib import messages
 # Create your views here.
 
+def home(request):
+    if request.user.is_authenticated:
+        return redirect('welcome')
+    return redirect('login')
+
 def register(request):
     if request.method == 'POST':
         username = request.POST['username']
